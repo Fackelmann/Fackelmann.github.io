@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Shuffling and permutations - Daniel G. Plaza</title>
+  <meta property="og:title" content="Shuffling and permutations - Daniel G. Plaza" />
+  <meta name="twitter:title" content="Shuffling and permutations - Daniel G. Plaza" />
+  <meta name="description" content="How would you shuffle a deck of cards? A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:
+for i = 1 to n do a[i] = i for i = 1 to n-1 do swap[a[i],a[Random[i,n]] My idea was:
+for i = 1 to n do a[i] = i for i = n to 1 do swap[a[i],a[random[1,i]] Both of them seemed reasonable, but were any of them correct?">
+  <meta property="og:description" content="How would you shuffle a deck of cards? A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:
+for i = 1 to n do a[i] = i for i = 1 to n-1 do swap[a[i],a[Random[i,n]] My idea was:
+for i = 1 to n do a[i] = i for i = n to 1 do swap[a[i],a[random[1,i]] Both of them seemed reasonable, but were any of them correct?">
+  <meta name="twitter:description" content="How would you shuffle a deck of cards? A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:
+for i = 1 to n do a[i] = i for i = 1 to …">
+  <meta name="author" content="Daniel Gonzalez Plaza"/>
+  <meta property="og:site_name" content="Daniel G. Plaza" />
+  <meta property="og:url" content="http://danielgplaza.com/posts/2019/shuffling-and-permutations/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.74.2" />
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">Daniel G. Plaza</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Shuffling and permutations</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>Created: August 25, 2019</time></li>
+	<li class="article-meta-date"><time>Last Modified: August 8, 2020</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/computer-science/">
+            <i class="fas fa-folder"></i>
+            Computer Science
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-would-you-shuffle-a-deck-of-cards">How would you shuffle a deck of cards?</a></li>
+    <li><a href="#permutations">Permutations</a></li>
+    <li><a href="#how-to-do-this">How to do this?</a></li>
+    <li><a href="#on-rank">On rank</a></li>
+    <li><a href="#shuffling-in-memory">Shuffling in memory</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#fisher-yatesknuth-shuffle">Fisher-Yates/Knuth Shuffle</a></li>
+    <li><a href="#takeaway">Takeaway</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</aside>
+      <h2 id="how-would-you-shuffle-a-deck-of-cards">How would you shuffle a deck of cards?</h2>
+<p>A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</code></pre></div>
+<p>My idea was:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</code></pre></div>
+<p>Both of them seemed reasonable, but were any of them correct?</p>
+<p>And what does it mean for the shuffling implementation to be correct? It means that each of the possible permutations of the array (or deck) is equally likely. Which is equivalent to the problem of generating a random permutation of a given array.</p>
+<p>This week I was flipping through Skiena&rsquo;s &ldquo;The Algorithm Design Manual&rdquo; and landed in section 14.4 &ldquo;Generating permutations&rdquo;, and ended up spending my weekend researching this subject.</p>
+<h2 id="permutations">Permutations</h2>
+<p>As mentioned previously the problem of shuffling a deck of cards (or an array of distinct elements for that matter) is equivalent to generating a random permutation. A standard playing card deck has 52 cards, and hence 52! possible deck arrangements. After shuffling we want to make sure every one of those possible 52! outputs is equally likely.</p>
+<h2 id="how-to-do-this">How to do this?</h2>
+<p>For small arrays it is feasible (but not trivial) to generate all possible permutations and then randomly select one of them and return it as the output. The problem is that permutations order of growth is factorial:</p>
+<ul>
+<li>For 4 cards we have 4! = 24 possible outputs</li>
+<li>For 6 cards we have 6! = 720 possible outputs</li>
+<li>For 8 cards we have 8! = 40320 possible outputs</li>
+<li>&hellip;</li>
+<li>For 52 cards we have 52! = ~8.06e67 possible outputs</li>
+</ul>
+<p>So this approach becomes unreasonable very quickly (factorially so!). There must be a better way.</p>
+<h2 id="on-rank">On rank</h2>
+<p>A quick side-note, as I will be using this in my analysis. The rank of a particular permutation is its position in a given <em>lexicographic</em> generation order. The lexicographic order is the sequence in which the different permutations would appear if they were sorted numerically [1].</p>
+<p>It&rsquo;s easier to understand with an example. Let&rsquo;s say we have 3 elements: {1,2,3}. The lexicographic order for its permutations is:</p>
+<p>{1,2,3} -&gt; {1,3,2} -&gt; {2,1,3} -&gt; {2,3,1} -&gt; {3,1,2} -&gt; {3,2,1}</p>
+<p>So:</p>
+<ul>
+<li>{1,2,3} will have rank 1</li>
+<li>{2,3,1} will have rank 4</li>
+<li>and so on</li>
+</ul>
+<p>In my experiments I will be calculating the rank of every permutation generated. A good shuffling algorithm will generate permutations whose rank is given by a uniform distribution, this is, every rank is equally likely.</p>
+<p>Skiena provides a recursive implementation for rank calculation in [1], but I ended up using the simpler implementation explained in [2]</p>
+<h2 id="shuffling-in-memory">Shuffling in memory</h2>
+<p>A better way to do this is to do something similar to what we do in &ldquo;Shuffle 1&rdquo; and &ldquo;Shuffle 2&rdquo;, this is, randomly swap element of the array. As I said those 2 algorithms seem reasonable, so let me throw another one into the mix:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</code></pre></div>
+<p>Reasonable enough as well, right? So let&rsquo;s put these 3 algorithms to test.</p>
+<p>For every shuffling algorithm I will have an unordered deck of cards ({1,2,3,4}) that I will shuffle and store the rank. I will do this 100k times and I will keep track of how many times each rank has appeared for every algorithm.</p>
+<p>If the algorithms provide real random permutations we would expect to see each rank to be equally likely.</p>
+<h2 id="results">Results</h2>
+<p>(Click to enlarge)
+<img src="/img/2019/shuffling.png" alt="shuffling"></p>
+<p>We observe that both Shuffle 1 and Shuffle 2 provide a uniform distribution of every possible permutation. But Shuffle 3 is definitely favoring some permutations over others. What is happening here?</p>
+<h2 id="analysis">Analysis</h2>
+<p>Let&rsquo;s put all 3 together here for easier reference.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</code></pre></div>
+<p>As we can see the variations are minimal.</p>
+<p>In <em>Shuffle 1</em> we traverse through the array. At every point we find a random index between the current index and the end of the array, and swap the current element with the element in the random index.</p>
+<p>In <em>Shuffle 2</em> we traverse through the array in reversed order. At every point we find a random index between the beginning of the array and the current index, and swap the current element with the element in the random index.</p>
+<p>We can already see these 2 implementations are equivalent.</p>
+<p>In <em>Shuffle 3</em> we swap the current element with a random element selected from the <em>whole</em> array. Strangely, this solution seems more random since each element can be swapped multiple times. But we already see that it won&rsquo;t provide a truly random permutation. Why? And why do <em>Shuffle 1</em> and <em>Shuffle 2</em> work?</p>
+<p>Jeff Atwood explains it beautifully in his article &ldquo;The danger of naivete&rdquo; [3].</p>
+<p>Let&rsquo;s say we have a 3 card deck. Shuffle 3 will do 3 shuffles: rand(3), rand(3), and rand(3). For a total of 3^3=27 possible outputs. Strange, since in 3 cards we only have 3! = 6 possible permutations. On the other hand shuffles 1 and 2 will do 2 shuffles: rand(3) and rand(2), for a total of 3*2 = 6 possible outputs. So far what we would expect!</p>
+<p>Let&rsquo;s see what the outputs for Shuffling 3 are:</p>
+<p><img src="/img/2019/shuffling_tree.png" alt="shuffling tree"></p>
+<p>If we count each occurrence we have:
+<img src="/img/2019/permutation_count.png" alt="permutation count"></p>
+<p>So we see clearly that with &ldquo;Shuffle 3&rdquo; each possible output won&rsquo;t be equally likely. Therefore, this is not a suitable algorithm to shuffle or generate random permutations.</p>
+<h2 id="fisher-yatesknuth-shuffle">Fisher-Yates/Knuth Shuffle</h2>
+<p>&ldquo;Shuffle 1&rdquo; and &ldquo;Shuffle 2&rdquo; are an implementation of what is known as Fisher-Yates[4] or Knuth (Algorithm P)[5] Shuffle.</p>
+<p>Originally developed as a manual method in the 30&rsquo;s by Fisher and Yates, with time complexity O(n^2). The above implementations reduce it&rsquo;s complexity to O(n), by swapping the selected elements and reducing the random index range at every iteration.</p>
+<p>Doing a similar analysis as the one showed above would yield the following possible outputs, each one with a count of 1:</p>
+<p>{1,2,3},{1,3,2},{2,1,3},{2,3,1},{3,1,2},{3,2,1}</p>
+<p>Which is exactly what we want from a random shuffle.</p>
+<h2 id="takeaway">Takeaway</h2>
+<p>We have seen that minimal changes in the implementation of an algorithm can yield results with undesirable random properties. The difference is subtle, easy to miss, and it&rsquo;s not evident which implementations are correct and which are not. It&rsquo;s better to stick with standard libraries when dealing with problems that require truly random results.</p>
+<h2 id="references">References</h2>
+<p>[1] Steven S. Skiena. 2008. The Algorithm Design Manual (2nd ed.). Springer Publishing Company, Incorporated.</p>
+<p>[2] <a href="https://stackoverflow.com/questions/39839119/rank-of-a-permutation">https://stackoverflow.com/questions/39839119/rank-of-a-permutation</a></p>
+<p>[3] <a href="https://blog.codinghorror.com/the-danger-of-naivete/">https://blog.codinghorror.com/the-danger-of-naivete/</a></p>
+<p>[4] <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">https://en.wikipedia.org/wiki/Fisher–Yates_shuffle</a></p>
+<p>[5] Donald E. Knuth. 1997. The Art of Computer Programming, Volume 2 (3rd Ed.): Seminumerical Algorithms. Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/posts/2019/measurement/" data-toggle="tooltip" data-placement="top" title="Measurement by Paul Lockhart - A review">&lt; Newer</a>
+      </li>
+      <li class="pager-older">
+        <a href="/posts/2019/mantel-clock/" data-toggle="tooltip" data-placement="top" title="Mantel Clock">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2020 Daniel Gonzalez Plaza</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+</body>
+</html>

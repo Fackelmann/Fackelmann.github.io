@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computer Science on Daniel G. Plaza</title>
+    <link>http://danielgplaza.com/categories/computer-science/</link>
+    <description>Recent content in Computer Science on Daniel G. Plaza</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
+    <lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://danielgplaza.com/categories/computer-science/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Shuffling and permutations</title>
+      <link>http://danielgplaza.com/posts/2019/shuffling-and-permutations/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2019/shuffling-and-permutations/</guid>
+      <description>How would you shuffle a deck of cards? A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:
+for i = 1 to n do a[i] = i for i = 1 to n-1 do swap[a[i],a[Random[i,n]] My idea was:
+for i = 1 to n do a[i] = i for i = n to 1 do swap[a[i],a[random[1,i]] Both of them seemed reasonable, but were any of them correct?</description>
+    </item>
+    
+  </channel>
+</rss>

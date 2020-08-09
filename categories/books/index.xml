@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Books on Daniel G. Plaza</title>
+    <link>http://danielgplaza.com/categories/books/</link>
+    <description>Recent content in Books on Daniel G. Plaza</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
+    <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://danielgplaza.com/categories/books/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Measurement by Paul Lockhart - A review</title>
+      <link>http://danielgplaza.com/posts/2019/measurement/</link>
+      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2019/measurement/</guid>
+      <description>A few weeks ago I discovered somewhat serendipitously the book &amp;ldquo;Measurement&amp;rdquo; by Paul Lockhart. Even though I haven&amp;rsquo;t finished it yet I want to share some of my thoughts on this excellent book.
+The Joy of Mathematics If you&amp;rsquo;ve ever taken a maths class (high school or undergrad level), the way it&amp;rsquo;s usually thought is &amp;ldquo;Here is this theorem, here is the proof on why it&amp;rsquo;s true. Here you have some exercises to apply this new theorem&amp;rdquo;.</description>
+    </item>
+    
+  </channel>
+</rss>

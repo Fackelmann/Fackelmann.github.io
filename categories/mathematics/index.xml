@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mathematics on Daniel G. Plaza</title>
+    <link>http://danielgplaza.com/categories/mathematics/</link>
+    <description>Recent content in Mathematics on Daniel G. Plaza</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://danielgplaza.com/categories/mathematics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>On tests, sensitivity, and specificity</title>
+      <link>http://danielgplaza.com/posts/2020/sensitivity-and-specificity/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2020/sensitivity-and-specificity/</guid>
+      <description>Disclaimer: This page neds javascript to render LaTeX and Bokeh content.
+I few days ago I was reading a Spanish newspaper and one of the headlines was how the government had acquired some tests with a sensitivity of 30% [1]. The article indicated that this was bad. But how bad? I wondered. What does it mean exactly?
+In this entry I will explain the following terms:
+ Sensitivity, also known as true positive rate, the recall, or probability of detection.</description>
+    </item>
+    
+    <item>
+      <title>Measurement by Paul Lockhart - A review</title>
+      <link>http://danielgplaza.com/posts/2019/measurement/</link>
+      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2019/measurement/</guid>
+      <description>A few weeks ago I discovered somewhat serendipitously the book &amp;ldquo;Measurement&amp;rdquo; by Paul Lockhart. Even though I haven&amp;rsquo;t finished it yet I want to share some of my thoughts on this excellent book.
+The Joy of Mathematics If you&amp;rsquo;ve ever taken a maths class (high school or undergrad level), the way it&amp;rsquo;s usually thought is &amp;ldquo;Here is this theorem, here is the proof on why it&amp;rsquo;s true. Here you have some exercises to apply this new theorem&amp;rdquo;.</description>
+    </item>
+    
+  </channel>
+</rss>
