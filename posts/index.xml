@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
-    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://danielgplaza.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>OOP and cars</title>
+      <link>http://danielgplaza.com/posts/2020/oop-and-cars/</link>
+      <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2020/oop-and-cars/</guid>
+      <description>When I first learned Object Oriented Programming (OOP) a few years ago the book I was reading had a strange obsession with cars.
+Imagine you have a car, it said. A car is composed of a body, four tires, and an engine. Furthermore, you can have a Ferrari, which is a specific type of car, or you could build cars with different types of wheels. This is the way it explained the concepts of Polymorfism, Inheritance, Composition, and Instantiation.</description>
+    </item>
     
     <item>
       <title>On tests, sensitivity, and specificity</title>
