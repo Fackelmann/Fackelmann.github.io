@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://danielgplaza.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A functional implementation Depth-First Search</title>
+      <link>http://danielgplaza.com/posts/2020/functional-dfs/</link>
+      <pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2020/functional-dfs/</guid>
+      <description>For the last few weeks I have been learning Racket. Coincidentally, Advent Of Code is back one more year. I decided to try to solve it with Racket, to force myself to learn more about the syntax and, well, use it.
+In particular, Day 7 is a graph problem. Basically we want to see how many vertices can reach a particular destination.
+This is straighforward. We can use breadth-first search (BFS) or depth-first search (DFS) on every vertex, and that way we&amp;rsquo;ll know how many can reach it.</description>
+    </item>
     
     <item>
       <title>OOP and cars</title>

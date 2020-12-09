@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on Daniel G. Plaza</title>
+    <link>http://danielgplaza.com/categories/web/</link>
+    <description>Recent content in Web on Daniel G. Plaza</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
+    <lastBuildDate>Sat, 12 Sep 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://danielgplaza.com/categories/web/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Link Rot</title>
+      <link>http://danielgplaza.com/posts/2020/link-rot/</link>
+      <pubDate>Sat, 12 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://danielgplaza.com/posts/2020/link-rot/</guid>
+      <description>Lately I have become increasingly worried about the problem of link rot. Gwern has an excellent article on it.
+I&amp;rsquo;ve been using Pinboard for more than 5 years, and I have over 1200 bookmarks, so out of curiosity I decided to check how many of these links were dead. The result was that more than 5% of the links didn&amp;rsquo;t exist any more, or redirected to a 403 page. Since I have been continously adding bookmarks over this time, this means that the link rot rate is (significantly) larger than 5% per 5 years.</description>
+    </item>
+    
+  </channel>
+</rss>
