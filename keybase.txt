@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/lowball
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://danielgplaza.com
+  * I am lowball (https://keybase.io/lowball) on keybase.
+  * I have a public key ASCGcmPLhFnMvpXRiHxQNQn5R6eb-SRNyz77P1PjK3_p1go
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120867263cb8459ccbe95d1887c503509f947a79bf9244dcb3efb3f53e32b7fe9d60a",
+      "host": "keybase.io",
+      "kid": "0120867263cb8459ccbe95d1887c503509f947a79bf9244dcb3efb3f53e32b7fe9d60a",
+      "uid": "edd93c56dead25ba22fea7a6a9d30719",
+      "username": "lowball"
+    },
+    "merkle_root": {
+      "ctime": 1660780076,
+      "hash": "a5be2693ffc021beae5ef10cf9acdd265e744f12f2a3b0eae50efb1b201ec1dd4d4f28e1e92040c3078f4dc8bc40d88dea06529b8d7874e1ede90b5a7d7b551e",
+      "hash_meta": "1fd2fadc9c057f1ff5f6bcb1306753984f842f49a4909f8fc7b60e6da72e61da",
+      "seqno": 23041815
+    },
+    "service": {
+      "entropy": "ehICLCoWHkEqY2wA5Kbo8NsQ",
+      "hostname": "danielgplaza.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.0.1"
+  },
+  "ctime": 1660780137,
+  "expire_in": 504576000,
+  "prev": "88f48e3c68a8286f840a7b58c733066f37d584bc6d1c22d03a5874001cc41128",
+  "seqno": 12,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEghnJjy4RZzL6V0Yh8UDUJ+Uenm/kkTcs++z9T4yt/6dYKp3BheWxvYWTESpcCDMQgiPSOPGioKG+ECntYxzMGbzfVhLxtHCLQOlh0ABzEESjEIDJnAj91tRtlSafVh44PZxWlA4CjTIgR2KDM5V69QHZ1AgHCo3NpZ8RAY4RP8G3zvWdXkts7m5tLnqfIwB3PqmRBOwQdyZ/Lwe/iik8Oc6kjhp6id/GB8XBf0Vicv99hlPy6vdTNuf6zBKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEILs3qMoPdr30tJiHTBQ8WhbYzOQyJY2nuvTW8zT2ZRfzo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/lowball
+
+==================================================================
