@@ -6,10 +6,6 @@
     <description>Recent content on Daniel G. Plaza</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
-    
-	<atom:link href="http://danielgplaza.com/archives/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright><atom:link href="http://danielgplaza.com/archives/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

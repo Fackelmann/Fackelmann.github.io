@@ -18,7 +18,7 @@ This is straighforward. We can use breadth-first search (BFS) or depth-first sea
   <meta property="og:url" content="http://danielgplaza.com/posts/2020/functional-dfs/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.105.0">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -84,13 +84,13 @@ This is straighforward. We can use breadth-first search (BFS) or depth-first sea
 <p>Racket already has a <a href="https://docs.racket-lang.org/graph/index.html">graph library</a>. But I&rsquo;m doing this to learn, not to ship production code. I have implemented DFS several times in other languages, and I also wanted to write my own implementation in Racket.</p>
 <h2 id="depth-first-search">Depth-first search</h2>
 <p>DFS is easy to implement following an imperative paradigm. We have the following code from the <a href="https://en.wikipedia.org/wiki/Depth-first_search#Pseudocode">Wikipedia</a>:</p>
-<pre><code> procedure DFS(G, v) is
+<pre tabindex="0"><code> procedure DFS(G, v) is
     label v as discovered
     for all directed edges from v to w that are in G.adjacentEdges(v) do
         if vertex w is not labeled as discovered then
             recursively call DFS(G, w)
 </code></pre><p>We are recursively applying DFS on every neighbor of the origin. We can add some termination conditions as well:</p>
-<pre><code> procedure DFS(G, v, dest) is
+<pre tabindex="0"><code> procedure DFS(G, v, dest) is
     if vertex is discovered
 	    return false
     if there are no neighbors
@@ -104,121 +104,121 @@ This is straighforward. We can use breadth-first search (BFS) or depth-first sea
 </code></pre><p>The problem is that we are relying on an outside variable <code>v</code> to carry the state. The output of <code>DFS</code> depends on the input arguments AND on this variable. If we were to implement it this way we would be following an <a href="https://en.wikipedia.org/wiki/Imperative_programming">imperative</a> style, rather than <a href="https://en.wikipedia.org/wiki/Functional_programming">functional</a> style.</p>
 <h2 id="an-imperative-approach">An imperative approach</h2>
 <p>Here&rsquo;s an example of my first take at this problem. Notice that discovered is a global variable that we <a href="https://en.wikibooks.org/wiki/Scheme_Programming/Mutability">modify</a> from within our function:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket">(<span style="color:#66d9ef">define</span> (DFS graph node dest)
-  (<span style="color:#66d9ef">define</span> counter <span style="color:#ae81ff">0</span>)
-  (<span style="color:#66d9ef">define</span> (DFS* node discovered)
-    (set-add! discovered node)
-    (<span style="color:#66d9ef">for</span> ([neighbor (hash-ref graph node)])
-      (<span style="color:#66d9ef">cond</span> ((equal? (neighbor-name neighbor) dest)
-             (<span style="color:#66d9ef">set!</span> counter (+ counter <span style="color:#ae81ff">1</span>)))
-            ((equal? (set-member? discovered (neighbor-name neighbor)) <span style="color:#66d9ef">#f</span>)
-             (DFS* (neighbor-name neighbor) discovered)))))
-  (DFS* node (mutable-set empty))
-  (<span style="color:#66d9ef">if</span> (&gt; counter <span style="color:#ae81ff">0</span>)
-      <span style="color:#ae81ff">1</span>
-      <span style="color:#ae81ff">0</span>))</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS graph node dest)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">define</span> counter <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">define</span> (DFS* node discovered)
+</span></span><span style="display:flex;"><span>    (set-add! discovered node)
+</span></span><span style="display:flex;"><span>    (<span style="color:#66d9ef">for</span> ([neighbor (hash-ref graph node)])
+</span></span><span style="display:flex;"><span>      (<span style="color:#66d9ef">cond</span> ((equal? (neighbor-name neighbor) dest)
+</span></span><span style="display:flex;"><span>             (<span style="color:#66d9ef">set!</span> counter (+ counter <span style="color:#ae81ff">1</span>)))
+</span></span><span style="display:flex;"><span>            ((equal? (set-member? discovered (neighbor-name neighbor)) <span style="color:#66d9ef">#f</span>)
+</span></span><span style="display:flex;"><span>             (DFS* (neighbor-name neighbor) discovered)))))
+</span></span><span style="display:flex;"><span>  (DFS* node (mutable-set empty))
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">if</span> (&gt; counter <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">0</span>))</span></span></code></pre></div>
 <p>Not the pretties implementation, it was a quick and dirt hack to solve the particular problem I was facing. But here we can see how I&rsquo;m modifying a global variable by mutating <code>discovered</code>. This is fine in other languages, like Python, but it&rsquo;s not idiomatic in Racket.</p>
 <h2 id="functional-dfs">Functional DFS</h2>
 <p>The following functions show a possible approach on how to implement DFS following a functional style (from <a href="http://htdp.org/2003-09-26/Book/curriculum-Z-H-35.html">HtDP</a>, with minor modifications):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket"><span style="color:#f92672">#lang </span>racket
-
-(<span style="color:#66d9ef">define</span> graph
-<span style="color:#75715e">;;  B ---&gt; C</span>
-<span style="color:#75715e">;;  ^\     |</span>
-<span style="color:#75715e">;;  | \    v</span>
-<span style="color:#75715e">;;  |  \--&gt;F </span>
-<span style="color:#75715e">;;  |      |</span>
-<span style="color:#75715e">;;  A&lt;------</span>
-<span style="color:#75715e">;;  |</span>
-<span style="color:#75715e">;;  v</span>
-<span style="color:#75715e">;;  E-----&gt;D</span>
-  (hash <span style="color:#f92672">&#39;</span><span style="color:#e6db74">A</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">B</span> <span style="color:#e6db74">E</span>)
-	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">F</span> <span style="color:#e6db74">C</span>)
-	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">C</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">F</span>)
-	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> empty
-	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">E</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">D</span>)
-	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">F</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">A</span>)))
-
-(<span style="color:#66d9ef">define</span> (node-neighbors node graph)
-  (hash-ref graph node))
-
-
-(<span style="color:#66d9ef">define</span> (DFS origin destiny graph)
-  (<span style="color:#66d9ef">cond</span> [(equal? origin destiny) (list destiny)]
-        [<span style="color:#66d9ef">else</span>
-         (<span style="color:#66d9ef">let</span> ((route (DFS* (node-neighbors origin graph) destiny graph)))
-           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
-               <span style="color:#66d9ef">#f</span>
-               (cons origin route)))]))
-
-
-(<span style="color:#66d9ef">define</span> (DFS* origin-nodes destiny graph)
-  (<span style="color:#66d9ef">cond</span> [(empty? origin-nodes) <span style="color:#66d9ef">#f</span>]
-        [<span style="color:#66d9ef">else</span>
-         (<span style="color:#66d9ef">let</span> ((route (DFS (first origin-nodes) destiny graph)))
-           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
-               (DFS* (rest origin-nodes) destiny graph)
-               route))]))</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span><span style="color:#f92672">#lang </span>racket
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> graph
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  B ---&gt; C</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  ^\     |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  | \    v</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  |  \--&gt;F </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  |      |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  A&lt;------</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  v</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;  E-----&gt;D</span>
+</span></span><span style="display:flex;"><span>  (hash <span style="color:#f92672">&#39;</span><span style="color:#e6db74">A</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">B</span> <span style="color:#e6db74">E</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">F</span> <span style="color:#e6db74">C</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">C</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">F</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> empty
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">E</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">D</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#39;</span><span style="color:#e6db74">F</span> <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">A</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (node-neighbors node graph)
+</span></span><span style="display:flex;"><span>  (hash-ref graph node))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS origin destiny graph)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">cond</span> [(equal? origin destiny) (list destiny)]
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>         (<span style="color:#66d9ef">let</span> ((route (DFS* (node-neighbors origin graph) destiny graph)))
+</span></span><span style="display:flex;"><span>           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
+</span></span><span style="display:flex;"><span>               <span style="color:#66d9ef">#f</span>
+</span></span><span style="display:flex;"><span>               (cons origin route)))]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS* origin-nodes destiny graph)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">cond</span> [(empty? origin-nodes) <span style="color:#66d9ef">#f</span>]
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>         (<span style="color:#66d9ef">let</span> ((route (DFS (first origin-nodes) destiny graph)))
+</span></span><span style="display:flex;"><span>           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
+</span></span><span style="display:flex;"><span>               (DFS* (rest origin-nodes) destiny graph)
+</span></span><span style="display:flex;"><span>               route))]))</span></span></code></pre></div>
 <p>First we define our graph as a <a href="https://docs.racket-lang.org/reference/hashtables.html">hash table</a>, where the key represents the vertex, and the value the neighboring vertices. It represents a direct, unweighted graph.</p>
 <p><code>DFS</code> is the main function. It will return <code>#f</code> if no path exist, and a path if a connection exists. For example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scheme" data-lang="scheme">&gt; (<span style="color:#a6e22e">DFS</span> <span style="color:#e6db74">&#39;A</span> <span style="color:#e6db74">&#39;C</span> graph)
-&gt; <span style="color:#f92672">&#39;</span>(A B C)
-&gt; (<span style="color:#a6e22e">DFS</span> <span style="color:#e6db74">&#39;D</span> <span style="color:#e6db74">&#39;C</span> graph)
-&gt; <span style="color:#66d9ef">#f</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scheme" data-lang="scheme"><span style="display:flex;"><span>&gt; (<span style="color:#a6e22e">DFS</span> <span style="color:#e6db74">&#39;A</span> <span style="color:#e6db74">&#39;C</span> graph)
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#f92672">&#39;</span>(A B C)
+</span></span><span style="display:flex;"><span>&gt; (<span style="color:#a6e22e">DFS</span> <span style="color:#e6db74">&#39;D</span> <span style="color:#e6db74">&#39;C</span> graph)
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#66d9ef">#f</span></span></span></code></pre></div>
 <p>We use the helper function <code>DFS*</code>. If there are no neighbors it will terminate (return false). If there are any neighbors it will first try to find a route from the origin to the first neighbor calling <code>DFS</code>. If such route exists, it will return it. If it doesn&rsquo;t, it will recursively call itself on remaining neighbors.</p>
 <h2 id="where-was-i">Where was I? </h2>
 <p>Do you notice something missing in this implementation? We are not keeping track of vertices we have visited.</p>
 <p>What problems might this cause? Let&rsquo;s try to find the path between <code>B</code> and <code>D</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket">&gt; (DFS <span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> graph)
-&gt; ...</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span>&gt; (DFS <span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> graph)
+</span></span><span style="display:flex;"><span>&gt; ...</span></span></code></pre></div>
 <p>The program will never finish. The reason is that we have a cyclic graph: <code>B -&gt; F -&gt; A -&gt; B</code> and <code>B -&gt; C -&gt; F -&gt; A -&gt; B</code>; our program will enter an infinite recursion.</p>
 <p>If we add a print statement in the <code>DFS</code> call to see which nodes we are visiting, this is what we will see:</p>
-<pre><code>...
-'A
-'B
-'F
-'A
-'B
-'F
-'A
-'B
-'F
-'A
+<pre tabindex="0"><code>...
+&#39;A
+&#39;B
+&#39;F
+&#39;A
+&#39;B
+&#39;F
+&#39;A
+&#39;B
+&#39;F
+&#39;A
 ...
 </code></pre><p><code>DFS</code> is visiting the same vertices again and again and again, since it has no memory of having visited them already.</p>
 <h2 id="keeping-track-of-the-state-without-a-global-state-accumulator">Keeping track of the state (without a global state): accumulator</h2>
 <p>To summarize, the problem with our previous algorithm is that it &ldquo;forgets&rdquo; which vertices it has visited. In the first implementation I showed I kept track of this information by using a global variable. How can we do it following a functional style?</p>
 <p>A common pattern in functional programming to solve this problem is to pass an extra argument to the function, the accumulator, in which we accumulate the knowledge we want to keep.</p>
 <p>Let&rsquo;s apply it to our DFS function:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket">(<span style="color:#66d9ef">define</span> (DFS.v2 origin destiny graph accu)
-  (<span style="color:#66d9ef">cond</span> [(equal? origin destiny) (list destiny)]
-        [(set-member? accu origin) <span style="color:#66d9ef">#f</span>]
-        [<span style="color:#66d9ef">else</span>
-         (<span style="color:#66d9ef">let</span> ((route (DFS*.v2 (node-neighbors origin graph)
-			          destiny
-					  graph
-					  (set-add accu origin))))
-           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
-               <span style="color:#66d9ef">#f</span>
-               (cons origin route)))]))
-
-
-(<span style="color:#66d9ef">define</span> (DFS*.v2 origin-nodes destiny graph accu)
-  (<span style="color:#66d9ef">cond</span> [(empty? origin-nodes) <span style="color:#66d9ef">#f</span>]
-        [<span style="color:#66d9ef">else</span>
-         (<span style="color:#66d9ef">let</span> ((route (DFS.v2 (first origin-nodes) destiny graph accu)))
-           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
-               (DFS*.v2 (rest origin-nodes) destiny graph accu)
-               route))]))</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS.v2 origin destiny graph accu)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">cond</span> [(equal? origin destiny) (list destiny)]
+</span></span><span style="display:flex;"><span>        [(set-member? accu origin) <span style="color:#66d9ef">#f</span>]
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>         (<span style="color:#66d9ef">let</span> ((route (DFS*.v2 (node-neighbors origin graph)
+</span></span><span style="display:flex;"><span>			          destiny
+</span></span><span style="display:flex;"><span>					  graph
+</span></span><span style="display:flex;"><span>					  (set-add accu origin))))
+</span></span><span style="display:flex;"><span>           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
+</span></span><span style="display:flex;"><span>               <span style="color:#66d9ef">#f</span>
+</span></span><span style="display:flex;"><span>               (cons origin route)))]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS*.v2 origin-nodes destiny graph accu)
+</span></span><span style="display:flex;"><span>  (<span style="color:#66d9ef">cond</span> [(empty? origin-nodes) <span style="color:#66d9ef">#f</span>]
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>         (<span style="color:#66d9ef">let</span> ((route (DFS.v2 (first origin-nodes) destiny graph accu)))
+</span></span><span style="display:flex;"><span>           (<span style="color:#66d9ef">if</span> (equal? route <span style="color:#66d9ef">#f</span>)
+</span></span><span style="display:flex;"><span>               (DFS*.v2 (rest origin-nodes) destiny graph accu)
+</span></span><span style="display:flex;"><span>               route))]))</span></span></code></pre></div></p>
 <p>We add a new termination condition: if we have already visited a vertex, there is no path. Also, when we call the helper function, we add the current vertex to the accumulator.</p>
 <p>Now we can get a path from <code>B</code> to <code>D</code>, even though we have a cycle; we know our function will always terminate:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket">&gt; (DFS.v2 <span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span>  graph (set empty))
-&gt; <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">B</span> <span style="color:#e6db74">F</span> <span style="color:#e6db74">A</span> <span style="color:#e6db74">E</span> <span style="color:#e6db74">D</span>)
-&gt; (DFS.v2 <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">A</span> graph (set empty))
-&gt; <span style="color:#66d9ef">#f</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span>&gt; (DFS.v2 <span style="color:#f92672">&#39;</span><span style="color:#e6db74">B</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span>  graph (set empty))
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#f92672">&#39;</span>(<span style="color:#e6db74">B</span> <span style="color:#e6db74">F</span> <span style="color:#e6db74">A</span> <span style="color:#e6db74">E</span> <span style="color:#e6db74">D</span>)
+</span></span><span style="display:flex;"><span>&gt; (DFS.v2 <span style="color:#f92672">&#39;</span><span style="color:#e6db74">D</span> <span style="color:#f92672">&#39;</span><span style="color:#e6db74">A</span> graph (set empty))
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#66d9ef">#f</span></span></span></code></pre></div>
 <p>Finally to make the interface the same as our original <code>DFS</code>, we can wrapp this new version around a new function:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-racket" data-lang="racket">(<span style="color:#66d9ef">define</span> (DFS-accu origin destiny graph)
-  (DFS.v2 origin destiny graph (set empty)))</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-racket" data-lang="racket"><span style="display:flex;"><span>(<span style="color:#66d9ef">define</span> (DFS-accu origin destiny graph)
+</span></span><span style="display:flex;"><span>  (DFS.v2 origin destiny graph (set empty)))</span></span></code></pre></div>
 
     </article>
 
@@ -226,7 +226,9 @@ This is straighforward. We can use breadth-first search (BFS) or depth-first sea
 
 
     <ul class="pager article-pager">
-      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-newer">
+          <a href="/posts/2022/emacs-advice/" data-toggle="tooltip" data-placement="top" title="Using Emacs Advice to use templates with org-journal">&lt; Newer</a>
+      </li>
       <li class="pager-older">
         <a href="/posts/2020/oop-and-cars/" data-toggle="tooltip" data-placement="top" title="OOP and cars">Older &gt;</a>
       </li>

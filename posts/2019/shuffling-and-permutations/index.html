@@ -19,7 +19,7 @@ for i = 1 to n do a[i] = i for i = 1 to …">
   <meta property="og:url" content="http://danielgplaza.com/posts/2019/shuffling-and-permutations/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.105.0">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -80,11 +80,11 @@ for i = 1 to n do a[i] = i for i = 1 to …">
 </aside>
       <h2 id="how-would-you-shuffle-a-deck-of-cards">How would you shuffle a deck of cards?</h2>
 <p>A couple of weeks ago I was talking to a friend about the problem of shuffling a deck of cards. His take on it was to do:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</span></span></code></pre></div>
 <p>My idea was:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</span></span></code></pre></div>
 <p>Both of them seemed reasonable, but were any of them correct?</p>
 <p>And what does it mean for the shuffling implementation to be correct? It means that each of the possible permutations of the array (or deck) is equally likely. Which is equivalent to the problem of generating a random permutation of a given array.</p>
 <p>This week I was flipping through Skiena&rsquo;s &ldquo;The Algorithm Design Manual&rdquo; and landed in section 14.4 &ldquo;Generating permutations&rdquo;, and ended up spending my weekend researching this subject.</p>
@@ -114,8 +114,8 @@ for i = 1 to n do a[i] = i for i = 1 to …">
 <p>Skiena provides a recursive implementation for rank calculation in [1], but I ended up using the simpler implementation explained in [2]</p>
 <h2 id="shuffling-in-memory">Shuffling in memory</h2>
 <p>A better way to do this is to do something similar to what we do in &ldquo;Shuffle 1&rdquo; and &ldquo;Shuffle 2&rdquo;, this is, randomly swap element of the array. As I said those 2 algorithms seem reasonable, so let me throw another one into the mix:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</span></span></code></pre></div>
 <p>Reasonable enough as well, right? So let&rsquo;s put these 3 algorithms to test.</p>
 <p>For every shuffling algorithm I will have an unordered deck of cards ({1,2,3,4}) that I will shuffle and store the rank. I will do this 100k times and I will keep track of how many times each rank has appeared for every algorithm.</p>
 <p>If the algorithms provide real random permutations we would expect to see each rank to be equally likely.</p>
@@ -125,12 +125,12 @@ for i = 1 to n do a[i] = i for i = 1 to …">
 <p>We observe that both Shuffle 1 and Shuffle 2 provide a uniform distribution of every possible permutation. But Shuffle 3 is definitely favoring some permutations over others. What is happening here?</p>
 <h2 id="analysis">Analysis</h2>
 <p>Let&rsquo;s put all 3 together here for easier reference.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</code></pre></div>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</code></pre></div>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[i,n]]</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> n to <span style="color:#ae81ff">1</span> do swap[a[i],a[random[<span style="color:#ae81ff">1</span>,i]]</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n do a[i] <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> to n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> do swap[a[i],a[Random[<span style="color:#ae81ff">1</span>,n]]</span></span></code></pre></div>
 <p>As we can see the variations are minimal.</p>
 <p>In <em>Shuffle 1</em> we traverse through the array. At every point we find a random index between the current index and the end of the array, and swap the current element with the element in the random index.</p>
 <p>In <em>Shuffle 2</em> we traverse through the array in reversed order. At every point we find a random index between the beginning of the array and the current index, and swap the current element with the element in the random index.</p>
