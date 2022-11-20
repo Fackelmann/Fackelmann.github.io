@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Daniel G. Plaza</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2020 Daniel Gonzalez Plaza</copyright>
+    <copyright>&amp;copy; Copyright 2022 Daniel Gonzalez Plaza</copyright>
     <lastBuildDate>Tue, 15 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://danielgplaza.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using Emacs Advice to use templates with org-journal</title>
@@ -92,15 +92,6 @@ for i = 1 to n do a[i] = i for i = n to 1 do swap[a[i],a[random[1,i]] Both of th
       <description>I&amp;rsquo;ve been attending the woodworking classes at Palo Alto High School for the last couple of years. This was my last project for the 2019 Spring term.
 It&amp;rsquo;s a craftsman style mantel clock (~15&amp;rsquo; tall). I used white oak and sligthly stained it at the end. I also applied a coat of wax. The clock face is made of cedar.
 It was a very technical but rewarding project. All the parts had to be carefully milled and measured to make sure they fit perfectly with each other.</description>
-    </item>
-    
-    <item>
-      <title>Euclidean algorithm on HP 35s</title>
-      <link>http://danielgplaza.com/posts/2021/euclidean-algorithm-hp-35s/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://danielgplaza.com/posts/2021/euclidean-algorithm-hp-35s/</guid>
-      <description></description>
     </item>
     
   </channel>
